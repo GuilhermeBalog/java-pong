@@ -7,6 +7,16 @@ import java.awt.*;
 
 public class Player {
 
+	private double cx;
+	private double cy;
+	private double width;
+	private double height;
+	private Color color;
+	private String id;
+	private double[] v_limit;
+	private double speed;
+
+
 	/**
 		Construtor da classe Player.
 
@@ -21,7 +31,15 @@ public class Player {
 	*/
 
 	public Player(double cx, double cy, double width, double height, Color color, String id, double [] v_limit, double speed){
-	
+
+		this.cx = cx;
+		this.cy = cy;
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.id = id;
+		this.v_limit = v_limit;
+		this.speed = speed;
 	}
 
 	/**
@@ -30,8 +48,8 @@ public class Player {
 
 	public void draw(){
 
-		GameLib.setColor(Color.GREEN);
-		GameLib.fillRect(80, 300, 20, 100);
+		GameLib.setColor(this.color);
+		GameLib.fillRect(this.cx, this.cy, this.width, this.height);
 	}
 
 	/**
@@ -44,6 +62,15 @@ public class Player {
 
 	public void moveUp(long delta){
 
+		// A contagem do eixo y é de cima pra baixo
+		double distance = delta * this.speed;
+		double topPosition = this.cy - (this.height / 2);
+
+		if(topPosition - distance > v_limit[0]){
+			this.cy -= distance;
+		} else {
+			this.cy = this.v_limit[0] + (this.height / 2);
+		}
 	}
 
 	/**
@@ -54,8 +81,17 @@ public class Player {
 		@param delta quantidade de millisegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
 
-	public void moveDown(long delta){
+	public void moveDown(long delta){		
 
+		// A contagem do eixo y é de cima pra baixo
+		double distance = delta * this.speed;
+		double bottomPostition = this.cy + (this.height / 2);
+
+		if(bottomPostition + distance < v_limit[1]){
+			this.cy += distance; 
+		} else {
+			this.cy = this.v_limit[1] - (this.height / 2);
+		}
 	}
 
 	/**
@@ -65,7 +101,7 @@ public class Player {
 
 	public String getId() { 
 
-		return ""; 
+		return this.id; 
 	}
 
 	/**
@@ -75,7 +111,7 @@ public class Player {
 
 	public double getWidth() { 
 
-		return 20; 
+		return this.width; 
 	}
 
 	/**
@@ -85,7 +121,7 @@ public class Player {
 
 	public double getHeight() { 
 
-		return 100;
+		return this.height;
 	}
 
 	/**
@@ -95,7 +131,7 @@ public class Player {
 
 	public double getCx() { 
 		
-		return 80;
+		return this.cx;
 	}
 
 	/**
@@ -105,7 +141,7 @@ public class Player {
 
 	public double getCy() { 
 	
-		return 300;
+		return this.cy;
 	}
 }
 
