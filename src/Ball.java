@@ -85,7 +85,6 @@ public class Ball {
 
 	public void onPlayerCollision(String playerId){
 		this.directionX *= -1;
-		System.out.println("player " + playerId + " bateu na bola");
 	}
 
 	/**
@@ -98,11 +97,9 @@ public class Ball {
 		// Inverte a direção
 		if(wallId.equals("Top") || wallId.equals("Bottom")){
 			this.directionY *= -1;
-			System.out.println("parede mudou o Y!");
 			
 		} else if(wallId.equals("Left") || wallId.equals("Right")){
 			this.directionX *= -1;
-			System.out.println("parede mudou o X!");
 		}
 	}
 
