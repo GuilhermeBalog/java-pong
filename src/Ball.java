@@ -13,8 +13,8 @@ public class Ball {
 	private double height;
 	private Color color;
 	private double speed;
-	private int directionX;
-	private int directionY;
+	private double directionX;
+	private double directionY;
 
 	/**
 		Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola 
@@ -42,14 +42,14 @@ public class Ball {
 		this.directionY = this.generateRandomDirection();
 	}
 
-	private int generateRandomDirection(){
+	private double generateRandomDirection(){
 		Random rdm = new Random();
 		int randomInt = rdm.nextInt(2);
 
 		if(randomInt == 0){
-			return 1;
+			return -(Math.abs(this.speed));
 		} else {
-			return -1;
+			return (Math.abs(this.speed));
 		}
 	}
 
@@ -71,10 +71,9 @@ public class Ball {
 	*/
 
 	public void update(long delta){
-		double distance = delta * speed;
 
-		this.cx += distance * this.directionX;
-		this.cy += distance * this.directionY;
+		this.cx += delta * this.directionX;
+		this.cy += delta * this.directionY;
 	}
 
 	/**
@@ -84,7 +83,12 @@ public class Ball {
 	*/
 
 	public void onPlayerCollision(String playerId){
-		this.directionX *= -1;
+		if(playerId.equals("Player 1")){
+			this.directionX = Math.abs(this.speed);
+
+		} else {
+			this.directionX = - Math.abs(this.speed);
+		}
 	}
 
 	/**
@@ -94,12 +98,17 @@ public class Ball {
 	*/
 
 	public void onWallCollision(String wallId){
-		// Inverte a direção
-		if(wallId.equals("Top") || wallId.equals("Bottom")){
-			this.directionY *= -1;
-			
-		} else if(wallId.equals("Left") || wallId.equals("Right")){
-			this.directionX *= -1;
+		if(wallId.equals("Top")){
+			this.directionY = Math.abs(this.speed);
+
+		} else if(wallId.equals("Bottom")){
+			this.directionY = - Math.abs(this.speed);
+
+		} else if(wallId.equals("Left")){
+			this.directionX = Math.abs(this.speed);
+
+		} else if(wallId.equals("Right")){
+			this.directionX = - Math.abs(this.speed);
 		}
 	}
 
@@ -171,20 +180,13 @@ public class Ball {
 		double playerLeft = player.getCx() - (player.getWidth() / 2);
 		double playerRight = player.getCx() + (player.getWidth() / 2);
 
-		String playerId = player.getId();
+		// colisoes
+		boolean rightColision = ballLeft <= playerRight;
+		boolean leftColision = ballRight >= playerLeft;
 
-		if(playerId.equals("Player 1")){
-			if(ballLeft <= playerRight && ballBottom >= playerTop && ballTop <= playerBottom){
-				return true;
-			}
+		boolean isBallBetweenPlayerTopAndBottom = ballBottom >= playerTop && ballTop <= playerBottom;
 
-		} else if(playerId.equals("Player 2")){
-			if(ballRight >= playerLeft && ballBottom >= playerTop && ballTop <= playerBottom){
-				return true;
-			}
-		}
-
-		return false;
+		return rightColision && leftColision && isBallBetweenPlayerTopAndBottom;
 	}
 
 	/**
