@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 /**
 	Esta classe representa a bola usada no jogo. A classe princial do jogo (Pong)
@@ -6,6 +7,14 @@ import java.awt.*;
 */
 
 public class Ball {
+	private double cx;
+	private double cy;
+	private double width;
+	private double height;
+	private Color color;
+	private double speed;
+	private int directionX;
+	private int directionY;
 
 	/**
 		Construtor da classe Ball. Observe que quem invoca o construtor desta classe define a velocidade da bola 
@@ -21,7 +30,27 @@ public class Ball {
 	*/
 
 	public Ball(double cx, double cy, double width, double height, Color color, double speed){
-	
+		
+		this.cx = cx;
+		this.cy = cy;
+		this.width = width;
+		this.height = height;
+		this.color = color;
+		this.speed = speed;
+
+		this.directionX = this.generateRandomDirection();
+		this.directionY = this.generateRandomDirection();
+	}
+
+	private int generateRandomDirection(){
+		Random rdm = new Random();
+		int randomInt = rdm.nextInt(2);
+
+		if(randomInt == 0){
+			return 1;
+		} else {
+			return -1;
+		}
 	}
 
 
@@ -31,8 +60,8 @@ public class Ball {
 
 	public void draw(){
 
-		GameLib.setColor(Color.YELLOW);
-		GameLib.fillRect(400, 300, 20, 20);
+		GameLib.setColor(this.color);
+		GameLib.fillRect(this.cx, this.cy, this.width, this.height);
 	}
 
 	/**
@@ -42,7 +71,10 @@ public class Ball {
 	*/
 
 	public void update(long delta){
+		double distance = delta * speed;
 
+		this.cx += distance * this.directionX;
+		this.cy += distance * this.directionY;
 	}
 
 	/**
@@ -52,7 +84,8 @@ public class Ball {
 	*/
 
 	public void onPlayerCollision(String playerId){
-
+		this.directionX *= -1;
+		System.out.println("player " + playerId + " bateu na bola");
 	}
 
 	/**
@@ -62,7 +95,15 @@ public class Ball {
 	*/
 
 	public void onWallCollision(String wallId){
-
+		// Inverte a direção
+		if(wallId.equals("Top") || wallId.equals("Bottom")){
+			this.directionY *= -1;
+			System.out.println("parede mudou o Y!");
+			
+		} else if(wallId.equals("Left") || wallId.equals("Right")){
+			this.directionX *= -1;
+			System.out.println("parede mudou o X!");
+		}
 	}
 
 	/**
@@ -73,6 +114,40 @@ public class Ball {
 	*/
 	
 	public boolean checkCollision(Wall wall){
+		String wallId = wall.getId();
+
+		if(wallId.equals("Top")){
+			double ballTop = this.cy - (this.height / 2);
+			double wallBottom = wall.getCy() + (wall.getHeight() / 2);
+
+			if(ballTop <= wallBottom){
+				return true;
+			}
+
+		} else if(wallId.equals("Bottom")){
+			double ballBottom = this.cy + (this.height / 2);
+			double wallTop = wall.getCy() - (wall.getHeight() / 2);
+
+			if(ballBottom >= wallTop){
+				return true;
+			}
+
+		} else if(wallId.equals("Left")){
+			double ballLeft = this.cx - (this.height / 2);
+			double wallRight = wall.getCx() + (wall.getWidth() / 2);
+
+			if(ballLeft <= wallRight){
+				return true;
+			}
+
+		} else if(wallId.equals("Right")){
+			double ballRight = this.cx + (this.width / 2);
+			double wallLeft = wall.getCx() - (wall.getWidth() / 2);
+			
+			if(ballRight >= wallLeft){
+				return true;
+			}
+		}
 
 		return false;
 	}
@@ -85,6 +160,32 @@ public class Ball {
 	*/	
 
 	public boolean checkCollision(Player player){
+		// hitbox da bola
+		double ballTop = this.cy - (this.height / 2);
+		double ballBottom = this.cy + (this.height / 2);
+
+		double ballLeft = this.cx - (this.width / 2);
+		double ballRight = this.cx + (this.width / 2);
+
+		// hitbox do player
+		double playerTop = player.getCy() - (player.getHeight() / 2);
+		double playerBottom = player.getCy() + (player.getHeight() / 2);
+
+		double playerLeft = player.getCx() - (player.getWidth() / 2);
+		double playerRight = player.getCx() + (player.getWidth() / 2);
+
+		String playerId = player.getId();
+
+		if(playerId.equals("Player 1")){
+			if(ballLeft <= playerRight && ballBottom >= playerTop && ballTop <= playerBottom){
+				return true;
+			}
+
+		} else if(playerId.equals("Player 2")){
+			if(ballRight >= playerLeft && ballBottom >= playerTop && ballTop <= playerBottom){
+				return true;
+			}
+		}
 
 		return false;
 	}
@@ -96,7 +197,7 @@ public class Ball {
 	
 	public double getCx(){
 
-		return 400;
+		return this.cx;
 	}
 
 	/**
@@ -106,7 +207,7 @@ public class Ball {
 
 	public double getCy(){
 
-		return 300;
+		return this.cy;
 	}
 
 	/**
@@ -117,7 +218,7 @@ public class Ball {
 
 	public double getSpeed(){
 
-		return 0;
+		return this.speed;
 	}
 
 }
