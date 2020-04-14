@@ -5,7 +5,7 @@ default: run
 # Executa a 'função' compile e roda o jogo com "safe mode" (0 true) 
 # Pode ser chamado com o comando make run
 run: compile
-	java Pong 0 true
+	java Pong 1 true
 
 # Compila os arquivos .java do EP
 # Pode ser chamado com o comando make complile
