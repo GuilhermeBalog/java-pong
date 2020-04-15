@@ -2,6 +2,8 @@
 
 Implementação em Java do clássico jogo Pong, desenvolvido como exercício de programação
 
+![Pong!](pong.gif)
+
 ## Instalação
 
 **Requisitos:**
