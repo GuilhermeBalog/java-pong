@@ -2,7 +2,7 @@
 # Chamado com o comando make
 default: run
 
-# Executa a 'função' compile e roda o jogo com "safe mode" (0 true) 
+# Executa a 'função' compile e roda o jogo com taxa de atualização 1 e em "safe mode" (1 true)
 # Pode ser chamado com o comando make run
 run: compile
 	java Pong 1 true

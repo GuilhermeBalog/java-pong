@@ -1,4 +1,6 @@
-Pong!
+EP1 - Pong!
+Nome: Guilherme Balog Gardino
+Nro USP: 11270649
 
 INSTRUÇÕES INSTALAÇÃO
 
@@ -10,16 +12,13 @@ Rodando com o GNU Make:
 
 Se o GNU Make está instalado, basta entrar na pasta src pela linha de comando e executar o comando 'make':
 
-------------
 cd src/
 make
-------------
 
 O GNU Make vai compilar os arquivos .java e rodar a classe principal Pong.
-
 Caso queira apenas compilar o programa, ainda na pasta src basta executar o comando 'make compile'
 
-Rodando sem o GNU Make
+Rodando sem o GNU Make:
 
 Se você não possuir o GNU Make, basta compilar os arquivos manualmente e rodar:
 
@@ -29,7 +28,9 @@ java Pong 1 true
 
 -----------------------------------------------------------------
 
-Esse é um exercício de programação proposto pelos professores Daniel Cordeiro e Flávio Luiz Coutinho
-e implementado por Guilherme Balog Gardino (https://guilhermebalog.github.io)
+Esse é um exercício de programação proposto pelos professores
+Daniel Cordeiro e Flávio Luiz Coutinho e implementado por
+Guilherme Balog Gardino (https://guilhermebalog.github.io)
 
-O Código também está disponível publicamente no GitHub em https://github.com/GuilhermeBalog/java-pong
+O Código também está disponível publicamente no
+GitHub em https://github.com/GuilhermeBalog/java-pong
